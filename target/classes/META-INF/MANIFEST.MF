@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Built-By: rakhchan
+Build-Jdk: 18.0.1
+Implementation-Title: demomaven
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com
+Implementation-URL: http://www.example.com
+Created-By: Maven Integration for Eclipse
+
