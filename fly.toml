@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for java-springboot-hello-name on 2026-05-27T17:07:56Z
+# fly.toml app configuration file generated for java-springboot-hello-name-petcrq on 2026-05-27T17:16:49Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'java-springboot-hello-name'
-primary_region = 'iad'
+app = 'java-springboot-hello-name-petcrq'
+primary_region = 'ams'
 
 [build]
 
