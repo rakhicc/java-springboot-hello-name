@@ -1,0 +1,48 @@
+name: Build and Deploy to Azure Container Apps
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ACR_NAME: rakhiacr123
+  RESOURCE_GROUP: RG_RakhiChirayilLab
+  CONTAINER_APP: rakhi-app
+  IMAGE_NAME: myapp
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Spring Boot JAR
+        run: mvn clean package
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and Push to ACR (NO DOCKER LOCAL)
+        run: |
+          az acr build \
+            --registry $ACR_NAME \
+            --image $IMAGE_NAME:v1 \
+            .
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update \
+            --name $CONTAINER_APP \
+            --resource-group $RESOURCE_GROUP \
+            --image $ACR_NAME.azurecr.io/$IMAGE_NAME:v1
