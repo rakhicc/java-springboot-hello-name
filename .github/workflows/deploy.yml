@@ -28,10 +28,14 @@ jobs:
       - name: Build Spring Boot JAR
         run: mvn clean package
 
-      - name: Azure Login
+
+      - name: Azure Login (OIDC)
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: 20907ee4-2a0c-4f84-83df-aebad2610cb5
+          tenant-id: ebcc9269-db27-4aaa-99a1-1eb9aa39bbd5
+          subscription-id: cee91bbe-6e6f-4ab1-83e0-4874489dd138
+
 
       - name: Build and Push to ACR (NO DOCKER LOCAL)
         run: |
