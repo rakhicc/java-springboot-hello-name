@@ -1,59 +1,21 @@
-name: Build and Deploy to Azure Container Apps
+name: Build JAR Only
 
 on:
   push:
     branches:
       - main
 
-
-# ADD PERMISSIONS HERE (top level)
-permissions:
-  id-token: write   # required for OIDC
-  contents: read    # required to checkout code
-
-
-env:
-  ACR_NAME: rakhiacr123
-  RESOURCE_GROUP: RG_RakhiChirayilLab
-  CONTAINER_APP: rakhi-app
-  IMAGE_NAME: myapp
-
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Java
+      - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          java-version: 17
 
-      - name: Build Spring Boot JAR
+      - name: Build project
         run: mvn clean package
-
-
-      - name: Azure Login (OIDC)
-        uses: azure/login@v1
-        with:
-          client-id: 20907ee4-2a0c-4f84-83df-aebad2610cb5
-          tenant-id: ebcc9269-db27-4aaa-99a1-1eb9aa39bbd5
-          subscription-id: cee91bbe-6e6f-4ab1-83e0-4874489dd138
-
-
-      - name: Build and Push to ACR (NO DOCKER LOCAL)
-        run: |
-          az acr build \
-            --registry $ACR_NAME \
-            --image $IMAGE_NAME:v1 \
-            .
-
-      - name: Deploy to Azure Container Apps
-        run: |
-          az containerapp update \
-            --name $CONTAINER_APP \
-            --resource-group $RESOURCE_GROUP \
-            --image $ACR_NAME.azurecr.io/$IMAGE_NAME:v1
