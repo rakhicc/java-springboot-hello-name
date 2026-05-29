@@ -5,6 +5,13 @@ on:
     branches:
       - main
 
+
+# ADD PERMISSIONS HERE (top level)
+permissions:
+  id-token: write   # required for OIDC
+  contents: read    # required to checkout code
+
+
 env:
   ACR_NAME: rakhiacr123
   RESOURCE_GROUP: RG_RakhiChirayilLab
